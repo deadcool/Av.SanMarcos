@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.usuario.fragment.MainFragment;
+import com.example.usuario.fragment.Noticias;
 import com.example.usuario.fragment.Ubicacion;
 import com.example.usuario.fragment.Universidad;
 import com.google.android.gms.maps.GoogleMap;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_institucion) {
 
         } else if (id == R.id.nav_noticias) {
-
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Noticias()).commit();
         } else if (id == R.id.nav_ubicate) {
             if(!supportMapFragment.isAdded()) {
                 fragmentManager1.beginTransaction().add(R.id.content_mapa, supportMapFragment).commit();

@@ -17,13 +17,21 @@ import android.view.MenuItem;
 import com.example.usuario.fragment.MainFragment;
 import com.example.usuario.fragment.Ubicacion;
 import com.example.usuario.fragment.Universidad;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+
+    SupportMapFragment supportMapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        supportMapFragment = SupportMapFragment.newInstance();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,6 +56,8 @@ public class MainActivity extends AppCompatActivity
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame,new MainFragment()).commit();
+
+        supportMapFragment.getMapAsync(this);
     }
 
     @Override
@@ -86,18 +96,27 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         FragmentManager fragmentManager = getFragmentManager();
+        android.support.v4.app.FragmentManager fragmentManager1 = getSupportFragmentManager();
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if(supportMapFragment.isAdded()){
+            fragmentManager1.beginTransaction().hide(supportMapFragment).commit();
+        }
+
+        if (id == R.id.nav_universidad) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Universidad()).commit();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_facultad) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_institucion) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_noticias) {
 
-        } else if (id == R.id.nav_share) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Ubicacion()).commit();
+        } else if (id == R.id.nav_ubicate) {
+            if(!supportMapFragment.isAdded()) {
+                fragmentManager1.beginTransaction().add(R.id.content_mapa, supportMapFragment).commit();
+            }else {
+                fragmentManager1.beginTransaction().show(supportMapFragment).commit();
+            }
         } else if (id == R.id.nav_send) {
 
         }
@@ -105,5 +124,10 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }

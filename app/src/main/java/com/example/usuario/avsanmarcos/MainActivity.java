@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.usuario.fragment.MainFragment;
+import com.example.usuario.fragment.Ubicacion;
 import com.example.usuario.fragment.Universidad;
 
 public class MainActivity extends AppCompatActivity
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
-
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Ubicacion()).commit();
         } else if (id == R.id.nav_send) {
 
         }

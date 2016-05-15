@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentManager1.beginTransaction().show(supportMapFragment).commit();
             }
         } else if (id == R.id.nav_send) {
-
+            LayoutInflater layoutInflater =(LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

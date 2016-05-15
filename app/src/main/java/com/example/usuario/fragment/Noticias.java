@@ -173,7 +173,6 @@ public class Noticias extends Fragment {
             tvnoticiafecha.setText(noticiaModelList.get(position).getFecha());
             tvnoticiadescripcion.setText(noticiaModelList.get(position).getDescripcion());
 
-
             return convertView;
         }
     }

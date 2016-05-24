@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.usuario.fragment.Administrador;
 import com.example.usuario.fragment.MainFragment;
 import com.example.usuario.fragment.Noticias;
 import com.example.usuario.fragment.Ubicacion;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_refresh) {
             return true;
         }
 
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_universidad) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Universidad()).commit();
         } else if (id == R.id.nav_facultad) {
-
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Administrador()).commit();
         } else if (id == R.id.nav_institucion) {
 
         } else if (id == R.id.nav_noticias) {

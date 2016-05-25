@@ -16,15 +16,9 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:id="@+id/ivubicacion" />
-            
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/progressBar"
-                android:layout_gravity="center"/>
-
+                android:layout_height="160dp"
+                android:id="@+id/ivfacultad"
+                android:src="@drawable/avengers" />
         </FrameLayout>
 
         <LinearLayout
@@ -36,22 +30,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Id"
+                android:text="IdFacultad"
+                android:id="@+id/tvidfacultad" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Nombre"
+                android:id="@+id/tvnombrefacultad" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="IdAutoridad"
+                android:id="@+id/tvidautoridad" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IdUniversidad"
+                android:id="@+id/tviduniversidad" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IdUbicacion"
                 android:id="@+id/tvidubicacion" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Latitud"
-                android:id="@+id/tvlatitud" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Longitud"
-                android:id="@+id/tvlongitud" />
+                android:text="IdAdministrador"
+                android:id="@+id/tvidadministrador" />
         </LinearLayout>
     </LinearLayout>
 

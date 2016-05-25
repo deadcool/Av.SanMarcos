@@ -13,11 +13,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.usuario.avsanmarcos.R;
 import com.example.usuario.model.AdministradorModel;
+import com.example.usuario.model.FacultadModel;
 import com.example.usuario.model.UbicacionModel;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -44,8 +51,19 @@ public class Ubicacion extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_ubicacion,container,false);
+
+        // Create default options which will be used for every
+//  displayImage(...) call if no options will be passed to this method
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true).build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity().getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .build();
+        ImageLoader.getInstance().init(config); // Do it on Application start
+
         miListaUbicacion = (ListView)rootView.findViewById(R.id.listaUbicacion);
-        new JSONTask().execute("http://52.36.38.235:9988/ubicacion/ubi1");
+        new JSONTask().execute("http://52.36.38.235:9988/ubicacion");
 
         return rootView;
     }
@@ -72,16 +90,8 @@ public class Ubicacion extends Fragment {
                 }
 
                 String finalJSON = stringBuffer.toString();
-                JSONObject finalJSONObject = new JSONObject(finalJSON);
+                JSONArray parentArray = new JSONArray(finalJSON);
 
-                List<UbicacionModel> ubicacionModelList = new ArrayList<>();
-                UbicacionModel ubicacionModel = new UbicacionModel();
-                ubicacionModel.setId(finalJSONObject.getString("Id"));
-                ubicacionModel.setLatitud(finalJSONObject.getString("Latitud"));
-                ubicacionModel.setLongitud(finalJSONObject.getString("Longitud"));
-                ubicacionModel.setImagenEncode(finalJSONObject.getString("Foto"));
-                ubicacionModelList.add(ubicacionModel);
-                /*
                 List<UbicacionModel> ubicacionModelList = new ArrayList<>();
                 for (int i = 0; i < parentArray.length(); i++) {
                     UbicacionModel ubicacionModel = new UbicacionModel();
@@ -89,9 +99,9 @@ public class Ubicacion extends Fragment {
                     ubicacionModel.setId(finalJSONObject.getString("Id"));
                     ubicacionModel.setLatitud(finalJSONObject.getString("Latitud"));
                     ubicacionModel.setLongitud(finalJSONObject.getString("Longitud"));
-                    ubicacionModel.setImagenEncode(finalJSONObject.getString("Foto"));
+                    ubicacionModel.setUrlfoto(finalJSONObject.getString("URLFoto"));
                     ubicacionModelList.add(ubicacionModel);
-                }*/
+                }
 
                 return ubicacionModelList;
 
@@ -126,41 +136,70 @@ public class Ubicacion extends Fragment {
     }
 
     public class UbicacionAdaptor extends ArrayAdapter {
-        private List<UbicacionModel> ubicacionModelList;
+        private List<UbicacionModel> facultadModelList;
         private int resource;
         LayoutInflater inflater;
 
         public UbicacionAdaptor(Context context, int resource, List objects) {
             super(context, resource, objects);
-            ubicacionModelList = objects;
+            facultadModelList = objects;
             this.resource = resource;
             inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder = null;
             if (convertView == null){
+                viewHolder = new ViewHolder();
                 convertView =inflater.inflate(resource,null);
+                viewHolder.ivubicacion = (ImageView)convertView.findViewById(R.id.ivubicacion);
+                viewHolder.tvid = (TextView)convertView.findViewById(R.id.tvidubicacion);
+                viewHolder.tvlatitud = (TextView)convertView.findViewById(R.id.tvlatitud);
+                viewHolder.tvlongitud = (TextView)convertView.findViewById(R.id.tvlongitud);
+                convertView.setTag(viewHolder);
+            }else{
+                viewHolder = (ViewHolder)convertView.getTag();
             }
-            ImageView ivubicacion;
-            TextView tvid;
-            TextView tvlatitud;
-            TextView tvlongitud;
 
-            ivubicacion = (ImageView)convertView.findViewById(R.id.ivubicacion);
-            tvid = (TextView)convertView.findViewById(R.id.tvidubicacion);
-            tvlatitud = (TextView)convertView.findViewById(R.id.tvlatitud);
-            tvlongitud = (TextView)convertView.findViewById(R.id.tvlongitud);
+            final ProgressBar progressBar = (ProgressBar)convertView.findViewById(R.id.progressBar);
+            ImageLoader.getInstance().displayImage("http://52.36.38.235/Huaca%20San%20Marcos.jpg", viewHolder.ivubicacion, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
 
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    progressBar.setVisibility(View.GONE);
+                }
 
-            //http://52.36.38.235/Huaca%20San%20Marcos.jpg
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+
+            viewHolder.tvid.setText(facultadModelList.get(position).getId());
+            viewHolder.tvlatitud.setText(facultadModelList.get(position).getLatitud());
+            viewHolder.tvlongitud.setText(facultadModelList.get(position).getLongitud());
+
             //Picasso.with(getActivity().getApplicationContext()).load(ubicacionModelList.get(position).getImagenEncode()).into(ivubicacion);
-            Picasso.with(getActivity().getApplicationContext()).load("http://52.36.38.235/Huaca%20San%20Marcos.jpg").into(ivubicacion);
-            tvid.setText(ubicacionModelList.get(position).getId());
-            tvlatitud.setText(ubicacionModelList.get(position).getLatitud());
-            tvlongitud.setText(ubicacionModelList.get(position).getLongitud());
+            //Picasso.with(getActivity().getApplicationContext()).load("http://52.36.38.235/Huaca%20San%20Marcos.jpg").into(ivubicacion);
 
             return convertView;
+        }
+
+        class ViewHolder{
+            private ImageView ivubicacion;
+            private TextView tvid;
+            private TextView tvlatitud;
+            private TextView tvlongitud;
         }
     }
 }

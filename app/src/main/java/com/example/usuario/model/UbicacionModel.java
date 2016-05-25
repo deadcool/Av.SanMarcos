@@ -11,7 +11,7 @@ public class UbicacionModel {
     private String id;
     private String latitud;
     private String longitud;
-    private String imagenEncode;
+    private String urlfoto;
 
     public String getId() {
         return id;
@@ -37,11 +37,11 @@ public class UbicacionModel {
         this.longitud = longitud;
     }
 
-    public String getImagenEncode() {
-        return imagenEncode;
+    public String getUrlfoto() {
+        return urlfoto;
     }
 
-    public void setImagenEncode(String imagenEncode) {
-        this.imagenEncode = imagenEncode;
+    public void setUrlfoto(String urlfoto) {
+        this.urlfoto = urlfoto;
     }
 }

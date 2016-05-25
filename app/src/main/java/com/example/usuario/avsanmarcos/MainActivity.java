@@ -15,7 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.usuario.fragment.Administrador;
+import com.example.usuario.fragment.Facultad;
 import com.example.usuario.fragment.MainFragment;
 import com.example.usuario.fragment.Noticias;
 import com.example.usuario.fragment.Ubicacion;
@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Universidad()).commit();
         } else if (id == R.id.nav_facultad) {
             //prueba con json administrador
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Administrador()).commit();
+            // fragmentManager.beginTransaction().replace(R.id.content_frame, new Administrador()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Facultad()).commit();
         } else if (id == R.id.nav_institucion) {
             //prueba con ubicacion
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Ubicacion()).commit();

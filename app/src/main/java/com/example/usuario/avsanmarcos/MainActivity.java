@@ -23,6 +23,8 @@ import com.example.usuario.fragment.Universidad;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
@@ -38,6 +40,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Create global configuration and initialize ImageLoader with this config
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+        ImageLoader.getInstance().init(config);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -109,9 +115,11 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_universidad) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Universidad()).commit();
         } else if (id == R.id.nav_facultad) {
+            //prueba con json administrador
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Administrador()).commit();
         } else if (id == R.id.nav_institucion) {
-
+            //prueba con ubicacion
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Ubicacion()).commit();
         } else if (id == R.id.nav_noticias) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Noticias()).commit();
         } else if (id == R.id.nav_ubicate) {

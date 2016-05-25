@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,9 +15,9 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="160dp"
-                android:id="@+id/ivadministrador"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/ivubicacion"
                 android:src="@drawable/avengers" />
         </FrameLayout>
 
@@ -30,28 +30,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="ID"
-                android:id="@+id/tvidadministrador" />
+                android:text="Id"
+                android:id="@+id/tvidubicacion" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Nombre"
-                android:id="@+id/tvnombre" />
+                android:text="Latitud"
+                android:id="@+id/tvlatitud" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Correo"
-                android:id="@+id/tvcorreo" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contraseña"
-                android:id="@+id/tvcontraseña" />
+                android:text="Longitud"
+                android:id="@+id/tvlongitud" />
         </LinearLayout>
     </LinearLayout>
 

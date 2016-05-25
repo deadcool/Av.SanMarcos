@@ -137,7 +137,7 @@ public class Administrador extends Fragment{
             TextView tvcontraseña;
 
             ivadministrador = (ImageView)convertView.findViewById(R.id.ivadministrador);
-            tvid = (TextView)convertView.findViewById(R.id.tvid);
+            tvid = (TextView)convertView.findViewById(R.id.tvidadministrador);
             tvnombre = (TextView)convertView.findViewById(R.id.tvnombre);
             tvcorreo = (TextView)convertView.findViewById(R.id.tvcorreo);
             tvcontraseña = (TextView)convertView.findViewById(R.id.tvcontraseña);

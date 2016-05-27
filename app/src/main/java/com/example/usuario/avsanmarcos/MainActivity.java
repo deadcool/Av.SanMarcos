@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,14 +16,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.example.usuario.fragment.Facultad;
+import com.example.usuario.fragment.Administrador;
 import com.example.usuario.fragment.MainFragment;
 import com.example.usuario.fragment.Noticias;
 import com.example.usuario.fragment.Ubicacion;
 import com.example.usuario.fragment.Universidad;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -36,7 +40,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         supportMapFragment = SupportMapFragment.newInstance();
-
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,12 +91,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             return true;
         }
@@ -111,22 +110,23 @@ public class MainActivity extends AppCompatActivity
         if(supportMapFragment.isAdded()){
             fragmentManager1.beginTransaction().hide(supportMapFragment).commit();
         }
-
         if (id == R.id.nav_universidad) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Universidad()).commit();
         } else if (id == R.id.nav_facultad) {
             //prueba con json administrador
-            // fragmentManager.beginTransaction().replace(R.id.content_frame, new Administrador()).commit();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Facultad()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Administrador()).commit();
         } else if (id == R.id.nav_institucion) {
             //prueba con ubicacion
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Ubicacion()).commit();
         } else if (id == R.id.nav_noticias) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Noticias()).commit();
         } else if (id == R.id.nav_ubicate) {
+            supportMapFragment.getMapAsync(this);
             if(!supportMapFragment.isAdded()) {
+                //addMarks(supportMapFragment);
                 fragmentManager1.beginTransaction().add(R.id.content_mapa, supportMapFragment).commit();
             }else {
+                //addMarks(supportMapFragment);
                 fragmentManager1.beginTransaction().show(supportMapFragment).commit();
             }
         } else if (id == R.id.nav_send) {
@@ -140,6 +140,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
+        Log.d(null, googleMap.toString());
+        /*LatLng UNMSM = new LatLng(-12.0560204,-77.0866113);
+        supportMapFragment.getMap().addMarker(new MarkerOptions().position(UNMSM).title("Universidad Nacional Mayor de San Marcos"));
+        supportMapFragment.getMap().moveCamera(CameraUpdateFactory.newLatLng(UNMSM));*/
     }
 }

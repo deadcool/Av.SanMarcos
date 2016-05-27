@@ -5,7 +5,6 @@ package com.example.usuario.model;
  */
 public class NoticiaModel {
     private String titulo;
-    private String subtitulo;
     private String fecha;
     private String imagen;
     private String descripcion;
@@ -16,14 +15,6 @@ public class NoticiaModel {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
-    }
-
-    public String getSubtitulo() {
-        return subtitulo;
-    }
-
-    public void setSubtitulo(String subtitulo) {
-        this.subtitulo = subtitulo;
     }
 
     public String getFecha() {

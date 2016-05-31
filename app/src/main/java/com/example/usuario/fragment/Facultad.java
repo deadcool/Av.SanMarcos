@@ -2,6 +2,7 @@ package com.example.usuario.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,11 +12,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.usuario.avsanmarcos.R;
 import com.example.usuario.model.AdministradorModel;
 import com.example.usuario.model.FacultadModel;
+import com.example.usuario.model.FacultadModel;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +49,15 @@ public class Facultad extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_facultad,container,false);
+
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory(true)
+                .cacheOnDisk(true).build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getActivity().getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .build();
+        ImageLoader.getInstance().init(config); // Do it on Application start
+
         miListaFacultades = (ListView)rootView.findViewById(R.id.listaFacultad);
         new JSONTask().execute("http://52.36.38.235:9988/facultades");
 
@@ -71,20 +88,18 @@ public class Facultad extends Fragment {
                 String finalJSON = stringBuffer.toString();
                 JSONArray parentArray = new JSONArray(finalJSON);
 
-                List<FacultadModel> facultadModelList = new ArrayList<>();
+                List<FacultadModel> FacultadModelList = new ArrayList<>();
                 for (int i = 0; i < parentArray.length(); i++) {
-                    FacultadModel facultadModel = new FacultadModel();
+                    FacultadModel FacultadModel = new FacultadModel();
                     JSONObject finalJSONObject = parentArray.getJSONObject(i);
-                    facultadModel.setId(finalJSONObject.getString("Id"));
-                    facultadModel.setNombre(finalJSONObject.getString("Nombre"));
-                    facultadModel.setIdAdministrador(finalJSONObject.getString("IdAdministrador"));
-                    facultadModel.setIdAutoridad(finalJSONObject.getString("IdAutoridad"));
-                    facultadModel.setIdUbicacion(finalJSONObject.getString("IdUbicacion"));
-                    facultadModel.setIdUniversidad(finalJSONObject.getString("IdUniversidad"));
-                    facultadModelList.add(facultadModel);
+                    FacultadModel.setId(finalJSONObject.getString("Id"));
+                    FacultadModel.setNombre(finalJSONObject.getString("Nombre"));
+                    FacultadModel.setAutoridad(finalJSONObject.getString("Autoridad"));
+                    FacultadModel.setUrlFoto(finalJSONObject.getString("URLFoto"));
+                    FacultadModelList.add(FacultadModel);
                 }
 
-                return facultadModelList;
+                return FacultadModelList;
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -130,33 +145,56 @@ public class Facultad extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder = null;
             if (convertView == null){
+                viewHolder = new ViewHolder();
                 convertView =inflater.inflate(resource,null);
+                viewHolder.ivfacultad = (ImageView)convertView.findViewById(R.id.ivFacultad);
+                viewHolder.tvnombre = (TextView)convertView.findViewById(R.id.tvFacultadNombre);
+                viewHolder.tvautoridad = (TextView)convertView.findViewById(R.id.tvFacultadAutoridad);
+                convertView.setTag(viewHolder);
+            }else{
+                viewHolder = (ViewHolder)convertView.getTag();
             }
-            ImageView ivfacultad;
-            TextView tvid;
-            TextView tvnombre;
-            TextView tvidautoridad;
-            TextView tviduniversidad;
-            TextView tvidubicacion;
-            TextView tvidadministrador;
 
-            ivfacultad = (ImageView)convertView.findViewById(R.id.ivfacultad);
-            tvid = (TextView)convertView.findViewById(R.id.tvidfacultad);
-            tvnombre = (TextView)convertView.findViewById(R.id.tvnombrefacultad);
-            tvidautoridad = (TextView)convertView.findViewById(R.id.tvidautoridad);
-            tviduniversidad = (TextView)convertView.findViewById(R.id.tviduniversidad);
-            tvidubicacion = (TextView)convertView.findViewById(R.id.tvidubicacion);
-            tvidadministrador = (TextView)convertView.findViewById(R.id.tvidadministrador);
+            String url = "http://" + facultadModelList.get(position).getUrlFoto();
 
-            tvid.setText(facultadModelList.get(position).getId());
-            tvnombre.setText(facultadModelList.get(position).getNombre());
-            tvidautoridad.setText(facultadModelList.get(position).getIdAutoridad());
-            tviduniversidad.setText(facultadModelList.get(position).getIdUniversidad());
-            tvidubicacion.setText(facultadModelList.get(position).getIdUbicacion());
-            tvidadministrador.setText(facultadModelList.get(position).getIdAdministrador());
+            final ProgressBar progressBar = (ProgressBar)convertView.findViewById(R.id.progressBar);
+            ImageLoader.getInstance().displayImage(url, viewHolder.ivfacultad, new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
+
+            viewHolder.tvnombre.setText(facultadModelList.get(position).getNombre());
+            viewHolder.tvautoridad.setText(facultadModelList.get(position).getAutoridad());
+
+            //Picasso.with(getActivity().getApplicationContext()).load(FacultadModelList.get(position).getImagenEncode()).into(ivubicacion);
+            //Picasso.with(getActivity().getApplicationContext()).load("http://52.36.38.235/Huaca%20San%20Marcos.jpg").into(ivubicacion);
 
             return convertView;
+        }
+
+        class ViewHolder{
+            private ImageView ivfacultad;
+            private TextView tvnombre;
+            private TextView tvautoridad;
         }
     }
 }

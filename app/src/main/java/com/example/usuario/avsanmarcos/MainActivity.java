@@ -17,16 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.usuario.fragment.Administrador;
+import com.example.usuario.fragment.Facultad;
 import com.example.usuario.fragment.MainFragment;
 import com.example.usuario.fragment.Noticias;
 import com.example.usuario.fragment.Ubicacion;
 import com.example.usuario.fragment.Universidad;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -110,28 +108,29 @@ public class MainActivity extends AppCompatActivity
         if(supportMapFragment.isAdded()){
             fragmentManager1.beginTransaction().hide(supportMapFragment).commit();
         }
-        if (id == R.id.nav_universidad) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Universidad()).commit();
-        } else if (id == R.id.nav_facultad) {
-            //prueba con json administrador
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Administrador()).commit();
-        } else if (id == R.id.nav_institucion) {
-            //prueba con ubicacion
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Ubicacion()).commit();
-        } else if (id == R.id.nav_noticias) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Noticias()).commit();
-        } else if (id == R.id.nav_ubicate) {
-            supportMapFragment.getMapAsync(this);
-            if(!supportMapFragment.isAdded()) {
-                //addMarks(supportMapFragment);
-                fragmentManager1.beginTransaction().add(R.id.content_mapa, supportMapFragment).commit();
-            }else {
-                //addMarks(supportMapFragment);
-                fragmentManager1.beginTransaction().show(supportMapFragment).commit();
-            }
-        } else if (id == R.id.nav_send) {
-            LayoutInflater layoutInflater =(LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        switch (id){
+            case R.id.nav_universidad:
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new Universidad()).commit();
+                break;
+            case R.id.nav_facultad:
+//                fragmentManager.beginTransaction().replace(R.id.content_frame, new Administrador()).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new Facultad()).commit();
+                break;
+            case R.id.nav_institucion:
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new Ubicacion()).commit();
+                break;
+            case R.id.nav_noticias:
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new Noticias()).commit();
+                break;
+            case R.id.nav_ubicate:
+                break;
+            case R.id.nav_send:
+                LayoutInflater layoutInflater =(LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+                break;
         }
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

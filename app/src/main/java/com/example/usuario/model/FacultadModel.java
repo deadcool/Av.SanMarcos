@@ -6,10 +6,8 @@ package com.example.usuario.model;
 public class FacultadModel {
     private String Id;
     private String Nombre;
-    private String IdAutoridad;
-    private String IdUniversidad;
-    private String IdUbicacion;
-    private String IdAdministrador;
+    private String Autoridad;
+    private String UrlFoto;
 
     public String getId() {
         return Id;
@@ -27,35 +25,19 @@ public class FacultadModel {
         Nombre = nombre;
     }
 
-    public String getIdAutoridad() {
-        return IdAutoridad;
+    public String getAutoridad() {
+        return Autoridad;
     }
 
-    public void setIdAutoridad(String idAutoridad) {
-        IdAutoridad = idAutoridad;
+    public void setAutoridad(String autoridad) {
+        Autoridad = autoridad;
     }
 
-    public String getIdUniversidad() {
-        return IdUniversidad;
+    public String getUrlFoto() {
+        return UrlFoto;
     }
 
-    public void setIdUniversidad(String idUniversidad) {
-        IdUniversidad = idUniversidad;
-    }
-
-    public String getIdUbicacion() {
-        return IdUbicacion;
-    }
-
-    public void setIdUbicacion(String idUbicacion) {
-        IdUbicacion = idUbicacion;
-    }
-
-    public String getIdAdministrador() {
-        return IdAdministrador;
-    }
-
-    public void setIdAdministrador(String idAdministrador) {
-        IdAdministrador = idAdministrador;
+    public void setUrlFoto(String urlFoto) {
+        UrlFoto = urlFoto;
     }
 }
